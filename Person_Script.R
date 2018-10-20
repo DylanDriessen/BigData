@@ -1,0 +1,10 @@
+#install.packages("data.table", type="source", dependencies=TRUE)
+#install.packages("qdap")
+library(data.table)
+library(dplyr)
+library(qdap)
+
+getwd()
+persondata = read.csv("Alfresco.csv")
+colsplit2df(persondata,, c("ID", "Name"), ";")
+#data.table(persondata)
