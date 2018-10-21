@@ -1,11 +1,11 @@
 library('readxl')
 setwd("~/R working directory")
 dataSet = data.frame(lapply( read_excel("Alfresco.xlsx"), as.character), stringsAsFactors = FALSE)
-dataSet <- dataSet[-c(1), ]
-View(dataSet)
+dataSet <- dataSet[-1, ]
+print(NROW(dataSet))
 newDataSet <- data.frame(id=numeric(), name=factor())
 
-for (i in 1:200) {
+for (i in 1:NROW(dataSet)) {
   containsNumber <- FALSE
   for (j in 0:9) {
     if (grepl(j, dataSet[i])) {
@@ -25,7 +25,7 @@ for (i in 1:200) {
   }
   else{
     id <- 0
-    name <- dataSet[i,1]
+    name <- dataSet[i]
     row <- data.frame(id, name)
     newDataSet <- rbind(newDataSet, row)
   }
