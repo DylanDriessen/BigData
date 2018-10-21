@@ -19,8 +19,10 @@ for (i in 1:NROW(dataSet)) {
     id <- as.numeric(properTableDelimited[1])
     name <- gsub('"', "", properTableDelimited[2])
     row <- data.frame(id, name)
-    newDataSet <- rbind(newDataSet, row)
     
+    if (!grepl("\\W", gsub("\\s", "", gsub('\\.', "", gsub('\\-', "", name))))) {
+      newDataSet <- rbind(newDataSet, row)
+    }
     containsNumber <- FALSE
   }
   else{
