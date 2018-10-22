@@ -17,7 +17,7 @@ for (i in 1:NROW(dataSet)) {
     properTableDelimited <- columnDelimited[[1]]
     
     id <- as.numeric(properTableDelimited[1])
-    name <- gsub('"', "", properTableDelimited[2])
+    name <- gsub('"', "", gsub("Â", "", properTableDelimited[2]))
     row <- data.frame(id, name)
     
     if (!grepl("\\W", gsub("\\s", "", gsub('\\.', "", gsub('\\-', "", name))))) {
