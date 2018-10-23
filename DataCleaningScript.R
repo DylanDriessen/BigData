@@ -1,5 +1,5 @@
 library('readxl')
-setwd("~/R working directory")
+setwd()
 dataSet = data.frame(lapply( read_excel("Alfresco.xlsx"), as.character), stringsAsFactors = FALSE)
 dataSet <- dataSet[-1, ]
 print(NROW(dataSet))
@@ -32,5 +32,3 @@ for (i in 1:NROW(dataSet)) {
     newDataSet <- rbind(newDataSet, row)
   }
 }
-
-View(newDataSet)
