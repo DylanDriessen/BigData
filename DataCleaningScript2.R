@@ -1,10 +1,11 @@
 library('readr')
-setwd("R working directory/")
 
-utf8Data <- read.csv(file = "Alfresco_EN_PDF__Persons_cln.utf8")
+#Werkt, geen vreemde data
+
 utf8Data <-read.table("Alfresco_EN_PDF__Persons_cln.utf8",
            sep=",",
-           header=TRUE, 
+           header=TRUE,
+           encoding="UTF-8",
            stringsAsFactors=FALSE
 )
-print(utf8Data)
+View(utf8Data)
