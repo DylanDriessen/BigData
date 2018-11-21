@@ -9,6 +9,8 @@ idDataSet <- as.data.frame(dataSet[,1], drop=FALSE)
 names(idDataSet) <- c('id')
 
 idDataSet <- merge(idDataSet, dataSet,by="id")
+
+#Gebruik kleiner aantal documenten
 idSet1 <- subset(idDataSet, i < 140451)
 
 #For each name give id's
@@ -18,8 +20,16 @@ nameDataSet <- unique(nameDataSet)
 
 nameDataSet <- merge(nameDataSet, dataSet, by="name")
 
-
-
-#Voor elke naam alle namen FUCKING HELL DAS TE GROOT, ZELFS ID AL IN 1/4 GEDEELD
+#Voor elke naam alle namen
 completeDataSet1 <- merge(nameDataSet, idSet1, by="name")
+
+#Voor specifieke naam alle gelinkte namen
+library(plyr)
+specificDataSet <- merge(subset(nameDataSet, name=="A. Acharya"), idSet1, by="id")
+frequencyDataSet <- count(specificDataSet, 'name.y')
+
+#specifieke wordcloud
+library(wordcloud)
+
+wordcloud(frequencyDataSet$name.y, frequencyDataSet$freq, random.order = FALSE)
 
