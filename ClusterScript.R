@@ -11,7 +11,7 @@ names(idDataSet) <- c('id')
 idDataSet <- merge(idDataSet, dataSet,by="id")
 
 #Gebruik kleiner aantal documenten
-idSet1 <- subset(idDataSet, id < 140451)
+idSet1 <- subset(idDataSet, id < 3119)
 
 #For each name give id's
 nameDataSet <- as.data.frame(dataSet[,2], drop=FALSE)
@@ -21,7 +21,7 @@ nameDataSet <- unique(nameDataSet)
 nameDataSet <- merge(nameDataSet, dataSet, by="name")
 
 #Voor elke naam alle namen
-completeDataSet1 <- merge(nameDataSet, idSet1, by="name")
+completeDataSet1 <- merge(nameDataSet, idSet1, by="id")
 
 #Voor specifieke naam alle gelinkte namen
 library(plyr)
@@ -35,3 +35,6 @@ wordcloud(frequencyDataSet$name.y, frequencyDataSet$freq, random.order = FALSE)
 
 #Cluster pogin 1
 namesFreqency <- count(dataSet, 'name')
+
+#Corpus
+corpus = tm:Corpus(tm::VectorSource(subset()))
