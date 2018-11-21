@@ -33,3 +33,5 @@ library(wordcloud)
 
 wordcloud(frequencyDataSet$name.y, frequencyDataSet$freq, random.order = FALSE)
 
+#Cluster pogin 1
+namesFreqency <- count(dataSet, 'name')
