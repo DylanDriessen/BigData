@@ -13,7 +13,7 @@ idDataSet <- merge(idDataSet, dataSet,by="id")
 #Gebruik kleiner aantal documenten
 
 idSet1 <- subset(idDataSet, id < 3119)
-
+idSet2 <- subset(idDataSet, id > 15000 & id < 20000)
 #For each name give id's
 nameDataSet <- as.data.frame(dataSet[,2], drop=FALSE)
 names(nameDataSet) <- c('name')
@@ -23,6 +23,7 @@ nameDataSet <- merge(nameDataSet, dataSet, by="name")
 
 #Voor elke naam alle namen
 completeDataSet1 <- merge(nameDataSet, idSet1, by="id")
+completeDataSet2 <- merge(nameDataSet, idSet2, by="id")
 
 #Voor specifieke naam alle gelinkte namen
 library(plyr)
