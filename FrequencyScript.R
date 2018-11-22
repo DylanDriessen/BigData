@@ -29,16 +29,15 @@ set.seed(6696)
 layout1 <- layout.fruchterman.reingold(g, niter=500)
 V(g)$size=degree(g, mode = "in")/30
 V(g)$color <- "orange"
+V(g)$frame.color <- NA
+E(g)$color <- rgb(.5, .5, 0, egam)
 plot(g, layout=layout1, rescale = FALSE)
 zm()
+
+
 #Better layout
-
-
-
 #V(g)$label.cex <- 2.2 * V(g)$degree / max(V(g)$degree)+ .2
-V(g)$frame.color <- NA
 egam <- (log(E(g)$weight)+.4) / max(log(E(g)$weight)+.4)
-E(g)$color <- rgb(.5, .5, 0, egam)
 E(g)$width <- egam
 # plot the graph in layout1
 plot(g, layout=layout1)
