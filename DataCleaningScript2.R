@@ -8,4 +8,3 @@ utf8Data <-read.table("Alfresco_EN_PDF__Persons_cln.utf8",
            encoding="UTF-8",
            stringsAsFactors=FALSE
 )
-View(utf8Data)
