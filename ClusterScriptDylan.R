@@ -5,26 +5,26 @@ library(viridis)
 
 dataSet2 <- utf8Data
 #Te kiezen naam
-name <- 'Laurent Morlet'
+name <- 'Hemangini Bari'
 
 #Geeft alle unieke ID's van de naam ".."
 nameSetUnique <- unique(dataSet2[dataSet2$entity==name,])
-#View(nameSet)
+View(nameSet)
 
 #Geeft alle unieke namen van personen verbonden met persoon hierboven in nameSet PER id
 nameDataSetUnique <- unique(merge(nameSetUnique, dataSet2, by="id"))
-#View(nameDataSet)
+View(nameDataSet)
 
 #Tel frequentie van naam
 frequencyDataSetUnique <- count(nameDataSetUnique, 'entity.y')
-#View(frequencyDataSet2)
+View(frequencyDataSet2)
 
 #Wordcloud
 par(mfrow=c(1,1))
 pal = brewer.pal(8,"Dark2")
 set.seed(1234)
 png("wordcloudUnique.png", width=1280,height=800)
-wordcloud(frequencyDataSetUnique$entity.y, frequencyDataSetUnique$freq, min.freq=2,scale=c(8, 2),
+wordcloud(frequencyDataSetUnique$entity.y, frequencyDataSetUnique$freq,scale=c(8, 2),
           max.words=Inf, random.order=FALSE, rot.per=.15,
           colors = pal)
 dev.off()
