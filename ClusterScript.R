@@ -12,7 +12,7 @@ idDataSet <- merge(idDataSet, dataSet,by="id")
 
 #Gebruik kleiner aantal documenten
 
-idSet1 <- subset(idDataSet, id < 3119)
+idSet1 <- subset(idDataSet)
 idSet2 <- subset(idDataSet, id > 15000 & id < 20000)
 #For each name give id's
 nameDataSet <- as.data.frame(dataSet[,2], drop=FALSE)
