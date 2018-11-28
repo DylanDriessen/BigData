@@ -32,8 +32,8 @@ dtm <- DocumentTermMatrix(corpus)
 #dtmMatrix <- as.matrix(dtm)
 
 #SKmeans test
-library(skmeans
-        )
+library(skmeans)
+
 hparty <- skmeans(dtm, 5, control = list(verbose = TRUE))
 
 
