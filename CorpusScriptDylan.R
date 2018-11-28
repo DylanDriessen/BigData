@@ -2,6 +2,7 @@ library(tm)
 library(data.table)
 library(doParallel)
 library(dplyr)
+library(netmeta)
 
 #corpus <- Corpus(VectorSource(dataSet2))
 #print(corpus)
