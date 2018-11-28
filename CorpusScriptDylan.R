@@ -19,6 +19,9 @@ View(completeDataSet4)
 sampleDataSet <- sample_n(completeDataSet4, 1000000)
 sampleDataSet <- setDT(sampleDataSet)
 
+sampleDataSet3 <- sample_n(completeDataSet4, 10)
+sampleDataSet3 <- setDT(sampleDataSet3)
+
 #doParallel
 registerDoParallel(cores=3)
 ptm3 <- proc.time()
@@ -36,8 +39,15 @@ UIMatrix <- sparseMatrix(i = sampleDataSet$entity.x,
                          x = NULL)
 proc.time()[3]-ptm5[3]
 
+registerDoParallel(cores=3)
 ptm5 <- proc.time()
 trial<-dcast(completeDataSet4, entity.x ~ entity.y, fill = 0)
+proc.time()[3]-ptm5[3]
+
+ptm5 <- proc.time()
+trial2<-dcast(sampleDataSet3, entity.x ~ entity.y)
+trial2$entity.x <-NULL
+distance <- netdistance(trial2)
 proc.time()[3]-ptm5[3]
 
 #proc.time -> 25.19 + Error vector size! Merge absoluut niet gebruiken dus!
