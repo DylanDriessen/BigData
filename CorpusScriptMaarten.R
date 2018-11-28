@@ -1,5 +1,6 @@
 library(tm)
 library(doParallel)
+library(zoom)
 
 uniqueID <- unique(cleanUtf8Data$id)
 documentNamesString <- NULL
@@ -9,11 +10,10 @@ documentNamerow <- data.frame(names=factor())
 
 #Alleen voor eerste 50 id's
 ptm <- proc.time()
-registerDoParallel(cores=3)
 for(i in 1:50){
   for(j in 1:nrow(cleanUtf8Data)){
     if(uniqueID[i] == cleanUtf8Data[j,1]){
-      spaceGone <- gsub(" ", "SPACE", cleanUtf8Data[j,2])
+      spaceGone <- gsub(" ", "22", cleanUtf8Data[j,2])
       spaceGone <- data.frame(spaceGone)
       names(spaceGone) <- "names"
       idNameSet <- rbind(idNameSet, spaceGone)
@@ -51,7 +51,7 @@ tdm.fit <- hclust(distMatrix, method = "ward.D")
 
 plot(tdm.fit, cex=0.9, hang=-1, main = "Cluster Diagram")
 rect.hclust(tdm.fit, k=5)
-
+zm()
 tdm.groups <- cutree(tdm.fit, k=5)
 
 
@@ -59,7 +59,7 @@ tdm.groups <- cutree(tdm.fit, k=5)
 library(skmeans)
 
 hparty <- skmeans(tdm, 5, control = list(verbose = TRUE))
-
+plot(hparty$)
 
 
 #parLapply test
