@@ -33,8 +33,6 @@ dtmMatrix <- as.matrix(dtm)
 
 #TDM maken
 tdm <- TermDocumentMatrix(corpus)
-tdm.sparse <- removeSparseTerms(tdm, sparse = 0.95)
-tdmMatrix <- as.matrix(tdm.sparse)
 tdmMatrix <- as.matrix(tdm)
 
 
@@ -42,6 +40,19 @@ tdmMatrix <- as.matrix(tdm)
 #library(wordcloud)
 #wordcloud(corpus, min.freq=10, colors=brewer.pal(8,"Set2"), random.order = FALSE, rot.per = 0.30)
 #comparison.cloud(dtmMatrix, max.words = 100, random.order = FALSE)
+
+
+#Hierarchical clustering
+tdm.sparse <- removeSparseTerms(tdm, sparse = 0.95)
+tdmSparseMatrix <- as.matrix(tdm.sparse)
+
+distMatrix <- dist(scale(tdmSparseMatrix))
+tdm.fit <- hclust(distMatrix, method = "ward.D")
+
+plot(tdm.fit, cex=0.9, hang=-1, main = "Cluster Diagram")
+rect.hclust(tdm.fit, k=5)
+
+tdm.groups <- cutree(tdm.fit, k=5)
 
 
 #SKmeans test
