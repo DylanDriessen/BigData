@@ -3,6 +3,7 @@ library(plyr)
 library(wordcloud)
 library(wordcloud2)
 library(viridis)
+library(dplyr)
 
 dataSet2 <- cleanUtf8Data
 #Te kiezen naam
