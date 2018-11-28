@@ -14,20 +14,7 @@ utf8Data <-read.table("Alfresco_EN_PDF__Persons_cln.utf8",
 
 cleanUtf8Data <<- data.frame(id=numeric(), name=factor())
 
-#With Grep
-ptm <- proc.time()
-for (i in 1:NROW(utf8Data)) {
-  id <- utf8Data[i,1]
-  name <- utf8Data[i,2]
-  row <- data.frame(id, name)
-  
-  if (!grepl("\\W", gsub("\\s", "", gsub('\\.', "", gsub('\\-', "", name))))) {
-    cleanUtf8Data <- rbind(cleanUtf8Data, row)
-  }
-}
-proc.time()[3]-ptm[3]
-
-#With TM
+#With tm package
 ptm <- proc.time()
 for (i in 1:NROW(utf8Data)) {
   id <- utf8Data[i,1]
@@ -41,6 +28,29 @@ for (i in 1:NROW(utf8Data)) {
   row <- data.frame(id, name)
   cleanUtf8Data <- rbind(cleanUtf8Data, row)
 }
+proc.time()[3]-ptm[3]
+
+
+#Try with foreach
+library(foreach)
+library("doParallel")
+
+registerDoParallel(cores=3)
+cleanFuncton <- function(n, utf8Data, cleanUtf8Data){
+  library(tm)
+    id <- utf8Data[n,1]
+    name <- utf8Data[n,2]
+    cName <- Corpus(VectorSource(name))
+    cName <- tm_map(cName, content_transformer(tolower))
+    cName <- tm_map(cName, removePunctuation)
+    cName <- tm_map(cName, content_transformer(function(x) gsub(x, pattern = '\\-', replacement = "")))
+    
+    name <- content(cName)
+    row <- data.frame(id, name)
+    cleanUtf8Data <<- rbind(cleanUtf8Data, row)
+}
+ptm <- proc.time()
+foreach(n=1:NROW(utf8Data)) %dopar% cleanFuncton(n, utf8Data, cleanUtf8Data)
 proc.time()[3]-ptm[3]
 
 
