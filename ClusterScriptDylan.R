@@ -3,21 +3,25 @@ library(plyr)
 library(wordcloud)
 library(wordcloud2)
 library(viridis)
+library(data.table)
 
-dataSet2 <- utf8Data
+dataSet2 <- cleanUtf8Data
+dataSet2 <- setDT(dataSet2)
 #Te kiezen naam
-name <- 'Matt Asay'
+name <- 'matt asay'
 
 #Geeft alle unieke ID's van de naam ".."
-nameSetUnique <- unique(dataSet2[dataSet2$entity==name,])
+nameSetUnique <- unique(dataSet2[dataSet2$name==name,])
+nameSetUnique <- setDT(nameSetUnique)
 View(nameSetUnique)
 
 #Geeft alle unieke namen van personen verbonden met persoon hierboven in nameSet PER id
-nameDataSetUnique <- unique(merge(nameSetUnique, dataSet2, by="id"))
+nameDataSetUnique <- unique(merge(nameSetUnique, dataSet2, by="id", allow.cartesian=TRUE))
+nameDataSetUnique <- setDT(nameDataSetUnique)
 View(nameDataSetUnique)
 
 #Tel frequentie van naam
-frequencyDataSetUnique <- count(nameDataSetUnique, 'entity.y')
+frequencyDataSetUnique <- count(nameDataSetUnique, 'name.y')
 View(frequencyDataSetUnique)
 
 #Wordcloud

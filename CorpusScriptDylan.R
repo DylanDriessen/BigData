@@ -67,15 +67,6 @@ clustering.kmeans <- kmeans(tfidf.matrix, 5)
 
 master.cluster <- clustering.kmeans$cluster 
 names(stacked.clustering) <- 1:length(master.cluster) 
-for (cluster in unique(master.cluster)) { 
-  indexes = which(master.cluster == cluster, arr.ind = TRUE) 
-  slave1.votes <- table(slave.hierarchical[indexes]) 
-  slave1.maxcount <- names(slave1.votes)[which.max(slave1.votes)]   
-  slave1.indexes = which(slave.hierarchical == slave1.maxcount, arr.ind = TRUE) 
-  slave2.votes <- table(slave.dbscan[indexes]) 
-  slave2.maxcount <- names(slave2.votes)[which.max(slave2.votes)]   
-  stacked.clustering[indexes] <- slave2.maxcount 
-}
 
 points <- cmdscale(dist.matrix, k = 2) 
 palette <- colorspace::diverge_hcl(truth.K) # Creating a color palette 
