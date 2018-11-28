@@ -29,12 +29,25 @@ corpus <- Corpus(VectorSource(documentNamesString))
 
 #DTM maken
 dtm <- DocumentTermMatrix(corpus)
-#dtmMatrix <- as.matrix(dtm)
+dtmMatrix <- as.matrix(dtm)
+
+#TDM maken
+tdm <- TermDocumentMatrix(corpus)
+tdm.sparse <- removeSparseTerms(tdm, sparse = 0.95)
+tdmMatrix <- as.matrix(tdm.sparse)
+tdmMatrix <- as.matrix(tdm)
+
+
+
+#library(wordcloud)
+#wordcloud(corpus, min.freq=10, colors=brewer.pal(8,"Set2"), random.order = FALSE, rot.per = 0.30)
+#comparison.cloud(dtmMatrix, max.words = 100, random.order = FALSE)
+
 
 #SKmeans test
 library(skmeans)
 
-hparty <- skmeans(dtm, 5, control = list(verbose = TRUE))
+hparty <- skmeans(tdm, 5, control = list(verbose = TRUE))
 
 
 
