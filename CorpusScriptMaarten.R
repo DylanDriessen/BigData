@@ -1,12 +1,47 @@
 library(tm)
-library(corpus)
+library(doParallel)
 
 uniqueID <- unique(cleanUtf8Data$id)
-documentNamesString <- data.frame(nameString=String(),stringsAsFactors=FALSE)
+documentNamesString <- NULL
 idNameSet <- data.frame(names=factor())
-documentNamerow <- data.frame(names=String(), stringsAsFactors=FALSE)
+documentNamerow <- data.frame(names=factor())
 
-for(i in 1:10){
+
+#Alleen voor eerste 50 id's
+ptm <- proc.time()
+registerDoParallel(cores=3)
+for(i in 1:50){
+  for(j in 1:nrow(cleanUtf8Data)){
+    if(uniqueID[i] == cleanUtf8Data[j,1]){
+      spaceGone <- gsub(" ", "SPACE", cleanUtf8Data[j,2])
+      spaceGone <- data.frame(spaceGone)
+      names(spaceGone) <- "names"
+      idNameSet <- rbind(idNameSet, spaceGone)
+    }
+  }
+  documentNamerow <- paste(idNameSet$names, collapse = " ")
+  documentNamesString <- rbind(documentNamesString, documentNamerow)
+}
+proc.time()[3]-ptm[3]
+
+#Corpus maken
+corpus <- Corpus(VectorSource(documentNamesString))
+
+#DTM maken
+dtm <- DocumentTermMatrix(corpus)
+#dtmMatrix <- as.matrix(dtm)
+
+#SKmeans test
+library(skmeans
+        )
+hparty <- skmeans(dtm, 5, control = list(verbose = TRUE))
+
+
+
+#parLapply test
+library(parallel)
+
+parLapply(c1, 1:NROW(uniqueID), function(i, cleanUtf8Data, idNameSet, documentNamesString, documentNamerow, uniqueID){
   for(j in 1:nrow(cleanUtf8Data)){
     if(uniqueID[i] == cleanUtf8Data[j,1]){
       spaceGone <- gsub(" ", ".", cleanUtf8Data[j,2])
@@ -17,5 +52,4 @@ for(i in 1:10){
   }
   documentNamerow <- paste(idNameSet$names, collapse = " ")
   documentNamesString <- rbind(documentNamesString, documentNamerow)
-}
-
+}, cleanUtf8Data, idNameSet, documentNamesString, documentNamerow, uniqueID)
