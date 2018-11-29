@@ -56,14 +56,15 @@ distance <- netdistance(trial2)
 proc.time()[3]-ptm5[3]
 
 #kmeans
+#sillhouettes is proberen gebruiken
 #k means algorithm, 2 clusters, 100 starting configurations
 t <- dist(as.matrix(tdmMatrix))
 d <- dist(as.matrix(dtmMatrix))
-kfit <- kmeans(t, 5, nstart = 100)
+kfit <- kmeans(tdmMatrix, 5, nstart = 100)
 kfit2 <- kmeans(d, 5, nstart = 100)
 #plot – need library cluster
 library(cluster)
-clusplot(as.matrix(t), kfit$cluster, color=T, shade=T, labels=2, lines=0)
+clusplot(as.matrix(tdm), kfit$cluster, color=T, shade=T, labels=2, lines=0)
 zm()
 library(cluster)
 clusplot(as.matrix(d), kfit2$cluster, color=T, shade=T, labels=2, lines=0)
