@@ -64,6 +64,10 @@ ptm <- proc.time()
 foreach(n=1:NROW(utf8Data)) %dopar% cleanFuncton(n, utf8Data, cleanUtf8Data)
 proc.time()[3]-ptm[3]
 
+#
+utf8Data$entity <- lapply(utf8Data$entity, function(x) tolower(x))
+
+#
 
 #Pogin tot parLapply DO NOT RUN
 ptm <- proc.time()
