@@ -5,8 +5,8 @@ library(dplyr)
 library(netmeta)
 library(proxy)
 library(skmeans)
-library(kmeans)
 library(stats)
+library(cluster)
 
 #corpus <- Corpus(VectorSource(dataSet2))
 #print(corpus)
@@ -55,6 +55,15 @@ trial2$entity.x <-NULL
 distance <- netdistance(trial2)
 proc.time()[3]-ptm5[3]
 
+#kmeans
+#k means algorithm, 2 clusters, 100 starting configurations
+kfit <- kmeans(tdmMatrix, 20, nstart=100)
+#plot – need library cluster
+library(cluster)
+clusplot(as.matrix(tdmMatrix), kfit$cluster, color=T, shade=T, labels=2, lines=0)
+zm()
+
+
 #Verder op maarten zijn script
 corpusDylan <- tm::Corpus(tm::VectorSource(documentNamesString))
 corpus.cleaned <- tm::tm_map(corpusDylan, tm::stripWhitespace)  
@@ -68,8 +77,7 @@ clustering.kmeans <- kmeans(tfidf.matrix, 5)
 master.cluster <- clustering.kmeans$cluster 
 names(stacked.clustering) <- 1:length(master.cluster) 
 
-points <- cmdscale(dist.matrix, k = 2) 
-palette <- colorspace::diverge_hcl(truth.K) # Creating a color palette 
+points <- cmdscale(dist.matrix, k = 4) 
 previous.par <- par(mfrow=c(2,2), mar = rep(1.5, 4)) 
 
 plot(points, main = 'K-Means clustering', col = as.factor(master.cluster), 
