@@ -3,10 +3,11 @@ library(plyr)
 library(wordcloud)
 library(wordcloud2)
 library(viridis)
+library(dplyr)
 
 dataSet2 <- cleanUtf8Data
 #Te kiezen naam
-name <- 'matt asay'
+name <- 'peter morel'
 
 #Geeft alle unieke ID's van de naam ".."
 nameSetUnique <- unique(dataSet2[dataSet2$name==name,])
@@ -17,6 +18,7 @@ nameDataSetUnique <- unique(merge(nameSetUnique, dataSet2, by="id"))
 View(nameDataSetUnique)
 
 #Tel frequentie van naam
+library(plyr)
 frequencyDataSetUnique <- count(nameDataSetUnique, nameDataSetUnique$name.y)
 View(frequencyDataSetUnique)
 
