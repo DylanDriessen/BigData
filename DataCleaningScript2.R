@@ -31,7 +31,18 @@ for (i in 1:NROW(utf8Data)) {
 proc.time()[3]-ptm[3]
 
 
-#Try with foreach
+
+
+
+
+
+
+
+
+
+
+
+#Try with foreach DO NOT RUN
 library(foreach)
 library("doParallel")
 
@@ -54,7 +65,7 @@ foreach(n=1:NROW(utf8Data)) %dopar% cleanFuncton(n, utf8Data, cleanUtf8Data)
 proc.time()[3]-ptm[3]
 
 
-#Pogin tot parLapply
+#Pogin tot parLapply DO NOT RUN
 ptm <- proc.time()
 parLapply(c1, 1:NROW(utf8Data), function(i, cleanUtf8Data, utf8Data){
   library(tm)
