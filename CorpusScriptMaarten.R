@@ -63,8 +63,8 @@ library(skmeans)
 library(cluster)
 
 skfit <- skmeans(tdmMatrix, 5)
-clusplot(tdmMatrix, skfit$cluster)
-
+clusplot(tdmMatrix, skfit$cluster, color = T, labels = 2)
+zm()
 
 
 
