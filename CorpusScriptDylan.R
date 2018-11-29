@@ -57,10 +57,12 @@ proc.time()[3]-ptm5[3]
 
 #kmeans
 #k means algorithm, 2 clusters, 100 starting configurations
-kfit <- kmeans(tdmMatrix, 20, nstart=100)
+kfit <- kmeans(tdmMatrix, 5)
+kfit2 <- kmeans(dtmMatrix, 5)
 #plot – need library cluster
 library(cluster)
 clusplot(as.matrix(tdmMatrix), kfit$cluster, color=T, shade=T, labels=2, lines=0)
+clusplot(as.matrix(dtmMatrix), kfit2$cluster, color=T, shade=T, labels=2, lines=0)
 zm()
 
 

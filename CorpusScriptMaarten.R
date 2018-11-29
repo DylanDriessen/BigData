@@ -21,6 +21,8 @@ for(i in 1:50){
   }
   documentNamerow <- paste(idNameSet$names, collapse = " ")
   documentNamesString <- rbind(documentNamesString, documentNamerow)
+  idNameSet <- data.frame(name=factor())
+  documentNamerow <- data.frame(names=factor())
 }
 proc.time()[3]-ptm[3]
 
@@ -35,6 +37,7 @@ dtmMatrix <- as.matrix(dtm)
 tdm <- TermDocumentMatrix(corpus)
 tdmMatrix <- as.matrix(tdm)
 
+print(corpus)
 
 
 #library(wordcloud)
