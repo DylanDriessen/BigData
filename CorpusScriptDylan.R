@@ -57,8 +57,9 @@ proc.time()[3]-ptm5[3]
 
 #kmeans
 #k means algorithm, 2 clusters, 100 starting configurations
-as
+t <- dist(as.matrix(tdmMatrix))
 d <- dist(as.matrix(dtmMatrix))
+kfit <- kmeans(t, 5, nstart = 100)
 kfit2 <- kmeans(d, 5, nstart = 100)
 #plot – need library cluster
 library(cluster)
