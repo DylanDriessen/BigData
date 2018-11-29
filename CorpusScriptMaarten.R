@@ -60,9 +60,19 @@ tdm.groups <- cutree(tdm.fit, k=5)
 
 #SKmeans test
 library(skmeans)
+library(cluster)
 
-hparty <- skmeans(tdm, 5, control = list(verbose = TRUE))
-plot(hparty$)
+skfit <- skmeans(tdmMatrix, 5)
+clusplot(tdmMatrix, skfit$cluster)
+
+
+
+
+
+
+
+
+
 
 
 #parLapply test
