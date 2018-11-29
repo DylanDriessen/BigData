@@ -10,16 +10,11 @@ documentNamerow <- data.frame(names=factor())
 
 #Alleen voor eerste 50 id's
 ptm <- proc.time()
-for(i in 1:50){
-  for(j in 1:nrow(cleanUtf8Data)){
-    if(uniqueID[i] == cleanUtf8Data[j,1]){
-      spaceGone <- gsub(" ", "22", cleanUtf8Data[j,2])
-      spaceGone <- data.frame(spaceGone)
-      names(spaceGone) <- "names"
-      idNameSet <- rbind(idNameSet, spaceGone)
-    }
-  }
-  documentNamerow <- paste(idNameSet$names, collapse = " ")
+for(i in 1:NROW(uniqueID)){
+  
+  test <- cleanUtf8Data[cleanUtf8Data$id == uniqueID[i],]
+  documentNamerow <- paste(test$name, collapse = "__")
+  
   documentNamesString <- rbind(documentNamesString, documentNamerow)
   idNameSet <- data.frame(name=factor())
   documentNamerow <- data.frame(names=factor())
@@ -46,7 +41,7 @@ print(corpus)
 
 
 #Hierarchical clustering
-tdm.sparse <- removeSparseTerms(tdm, sparse = 0.95)
+tdm.sparse <- removeSparseTerms(tdm, sparse = 0.98)
 tdmSparseMatrix <- as.matrix(tdm.sparse)
 
 distMatrix <- dist(scale(tdmSparseMatrix))
@@ -62,8 +57,9 @@ tdm.groups <- cutree(tdm.fit, k=5)
 library(skmeans)
 library(cluster)
 
-skfit <- skmeans(tdmMatrix, 5)
-clusplot(tdmMatrix, skfit$cluster, color = T, labels = 2)
+distTdm <- dist(tdmMatrix)
+skfit <- skmeans(as.matrix(distTdm), 5)
+clusplot(as.matrix(distTdm), skfit$cluster, color = T, labels = 2)
 zm()
 
 
