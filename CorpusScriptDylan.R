@@ -58,7 +58,9 @@ proc.time()[3]-ptm5[3]
 #kmeans
 #sillhouettes is proberen gebruiken
 #k means algorithm, 2 clusters, 100 starting configurations
-t <- dist(as.matrix(tdmMatrix))
+library(proxy)
+t <- dist(as.matrix(tdmMatrix), method="cosine")
+print(t)
 d <- dist(as.matrix(dtmMatrix))
 kfit <- kmeans(tdmMatrix, 5, nstart = 100)
 kfit2 <- kmeans(d, 5, nstart = 100)
@@ -103,4 +105,13 @@ plot(points, main = 'K-Means clustering', col = as.factor(master.cluster),
 #ptm3 <- proc.time()
 #matrix4 <- dcast(sampleDataSet, entity.x~entity.y, fill=0)[-1]
 #proc.time()[3]-ptm3[3]
+
+tdm1 <- DocumentTermMatrix(corpus)
+m <- as.matrix(tdm1)
+dti <- DocumentTermMatrix(corpus, control = list(weighting = weightTfIdf()))
+m1 <- as.matrix(dtmi)
+dtms <- removeSparseTerms(dtmi, 0.79)
+m2 <- as.matrix(dtms)
+m3 <- 1 - crossprod_simple_triplet_matrix(dtms)/(sqrt(col_sums(dtms^2) %*% t(col_sums(dtms^2))))
+km.res <- eclust(m3, "kmeans", k = 3, nstart = 100, graph = FALSE)
 

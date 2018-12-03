@@ -1,0 +1,5 @@
+library(tm)
+tdm <- TermDocumentMatrix(corpus)
+tdmMatrix <- as.matrix(tdm)
+print(tdm)
+print(tdmMatrix)
