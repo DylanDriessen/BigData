@@ -1,6 +1,6 @@
 library(tm)
 library(doParallel)
-library(zoom)
+library(slam)
 library(skmeans)
 library(plyr)
 
@@ -23,24 +23,6 @@ for(i in 1:NROW(uniqueID)){
 }
 proc.time()[3]-ptm[3]
 
-#Sparse matrix maken
-freqDoc <- data.frame(id = numeric(), name = String(), freq = numeric())
-row <- data.frame(names=String())
-
-ptm <- proc.time()
-for(i in 1:NROW(uniqueID)){
-  
-  idSet <- cleanUtf8Data[cleanUtf8Data$id == uniqueID[i],]
-  row <- count(idSet, idSet$entity)
-  
-  
-  idSet <- data.frame(name=factor())
-  row <- data.frame(names=String())
-}
-proc.time()[3]-ptm[3]
-
-freqDoc.sparse <- sparseMatrix(i =freqDoc$id)
-
-
-idSet <- cleanUtf8Data[cleanUtf8Data$id == uniqueID[100],]
-row <- count(idSet, idSet$entity)
+#Cluster skmeans
+data.aggr <- summarise(group_by(cleanUtf8Data, id, name), count = n())
+data.triplet <- simple_triplet_matrix(data.aggr$id, data.aggr$name, data.aggr)
