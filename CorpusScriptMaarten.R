@@ -3,6 +3,8 @@ library(doParallel)
 library(slam)
 library(skmeans)
 library(plyr)
+library(dplyr)
+library(Matrix)
 
 uniqueID <- unique(cleanUtf8Data$id)
 documentNamesString <- NULL
@@ -23,6 +25,24 @@ for(i in 1:NROW(uniqueID)){
 }
 proc.time()[3]-ptm[3]
 
+
+
 #Cluster skmeans
 data.aggr <- summarise(group_by(cleanUtf8Data, id, name), count = n())
-data.triplet <- simple_triplet_matrix(data.aggr$id, data.aggr$name, data.aggr)
+
+data.aggr$name <- as.factor(data.aggr$name)
+data.aggr$id <- as.factor(data.aggr$id)
+
+i <- c(data.aggr$id)
+j <- c(data.aggr$name)
+v <- c(data.aggr$count)
+data.triplet <- simple_triplet_matrix(i,j,v)
+
+set.seed(2000)
+data.cluster <- skmeans(data.triplet, 5)
+
+data.sparse <-  sparseMatrix(i=i, j=j, x=v)
+
+library(cluster)
+clusplot(data.sparse, data.cluster$cluster, color=TRUE, shade=TRUE, 
+         labels=2, lines=0)
