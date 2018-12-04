@@ -7,7 +7,7 @@ library(dplyr)
 
 dataSet2 <- cleanUtf8Data
 #Te kiezen naam
-name <- 'matt asay'
+name <- 'matt_asay'
 
 #Geeft alle unieke ID's van de naam ".."
 nameSetUnique <- unique(dataSet2[dataSet2$name==name,])
