@@ -1,15 +1,16 @@
 library(tm)
 library(doParallel)
-library(zoom)
+library(slam)
 library(skmeans)
+library(plyr)
 
 uniqueID <- unique(cleanUtf8Data$id)
 documentNamesString <- NULL
-idNameSet <- data.frame(names=factor())
+idSet <- data.frame(names=factor())
 documentNamerow <- data.frame(names=factor())
 
 
-#Alleen voor eerste 50 id's
+#Corpus maken
 ptm <- proc.time()
 for(i in 1:NROW(uniqueID)){
   
@@ -17,11 +18,11 @@ for(i in 1:NROW(uniqueID)){
   documentNamerow <- paste(idSet$entity, collapse = " ")
   
   documentNamesString <- rbind(documentNamesString, documentNamerow)
-  idNameSet <- data.frame(name=factor())
+  idSet <- data.frame(name=factor())
   documentNamerow <- data.frame(names=factor())
 }
 proc.time()[3]-ptm[3]
 
-#Corpus maken
-corpus <- Corpus(VectorSource(documentNamesString))
-
+#Cluster skmeans
+data.aggr <- summarise(group_by(cleanUtf8Data, id, name), count = n())
+data.triplet <- simple_triplet_matrix(data.aggr$id, data.aggr$name, data.aggr)
