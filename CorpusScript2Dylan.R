@@ -1,9 +1,30 @@
 library(magrittr)
 library(plyr)
 library(dplyr)
+library(slam)
+library(skmeans)
+#Source Data
+NewTable <- summarise(group_by(cleanUtf8Data,id,name),count = n())
+NewTable$id <- as.factor(NewTable$id)
+NewTable$name <- as.factor(NewTable$name)
+as.numeric(NewTable$id)
+as.numeric(NewTable$name)
 
-NewTable <- summarise(group_by(cleanUtf8Data,id,name),count =n())
+#Simple triplet Matrix
+New2Table <- data.frame(unclass(NewTable))
+#library(SnowballC)
+i = c(NewTable$id)
+j = c(NewTable$name)
+v = c(NewTable$count)
+xx = simple_triplet_matrix(i,j,v)
+xx
 
+q <- as.numeric(levels(New2Table$id))
+
+
+#skmeans
+set.seed(1234)
+skmeans <- skmeans(xx, 5)
 
 #Overbodige nest momenteel
 NewTable <- cleanUtf8Data %>%
