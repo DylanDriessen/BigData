@@ -1,5 +1,4 @@
 library(tm)
-library(doParallel)
 library(slam)
 library(skmeans)
 library(plyr)
@@ -41,8 +40,13 @@ data.triplet <- simple_triplet_matrix(i,j,v)
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
 
-data.sparse <-  sparseMatrix(i=i, j=j, x=v)
 
-library(cluster)
-clusplot(data.sparse, data.cluster$cluster, color=TRUE, shade=TRUE, 
-         labels=2, lines=0)
+#Plotting
+test <- i
+test <- cbind(test, j)
+
+plot(test, col = data.cluster$cluster)
+
+test2 <- j
+test2 <- cbind(test2, v)
+plot(test2, col = data.cluster$cluster)
