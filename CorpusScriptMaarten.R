@@ -36,26 +36,18 @@ i <- c(data.aggr$id)
 j <- c(data.aggr$name)
 v <- c(data.aggr$count)
 data.triplet <- simple_triplet_matrix(i,j,v)
+data.triplet2 <- simple_triplet_matrix(j, i, v)
 
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
+data.cluster2 <- skmeans(data.triplet2, 5)
 
-data.xcluster <- skmeans_xdist(data.triplet)
-#data.fit <- cmdscale(data.xcluster, 3, )
-#Plotting
-library(clusplot)
+#Names and clusters
+uniqueNames <- data.frame(name=unique(data.triplet2$i))
+cluster <- data.frame(cluster = data.cluster2$cluster, name=1:length(data.cluster2$cluster))
 
-data.spars <- sparseMatrix(i = i, j = j, x = as.numeric(v))
-
-clusplot(data.spars, data.cluster$cluster)
-
-test <- i
-test <- cbind(test, j)
-
-plot(test, col = data.cluster$cluster)
-
-test2 <- j
-test2 <- cbind(test2, v)
-plot(test2, col = data.cluster$cluster)
-
-ggplot(data=data.aggr, aes(x=j, y=v, color=data.cluster$cluster )) +geom_point()
+data.names.cluster <- merge(uniqueNames, cluster, by.x = "name", by.y = "name")
+data.names.cluster$nameText <- lapply(data.names.cluster$name, function(x) {
+  if(unique(cleanUtf8Data$name==))
+})
+                                 
