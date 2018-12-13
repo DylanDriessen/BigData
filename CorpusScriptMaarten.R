@@ -42,12 +42,14 @@ set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
 data.cluster2 <- skmeans(data.triplet2, 5)
 
-#Names and clusters
-uniqueNames <- data.frame(name=unique(data.triplet2$i))
-cluster <- data.frame(cluster = data.cluster2$cluster, name=1:length(data.cluster2$cluster))
+#Prepare data for JSON
 
-data.names.cluster <- merge(uniqueNames, cluster, by.x = "name", by.y = "name")
-data.names.cluster$nameText <- lapply(data.names.cluster$name, function(x) {
-  if(unique(cleanUtf8Data$name==))
-})
-                                 
+#Names with cluster
+data.names.cluster <- data.frame(cluster = data.cluster2$cluster, group=unique(data.aggr$name[order(data.aggr$name)]))
+
+#Names with connected names and value
+data.summ <- summarise(group_by(cleanUtf8Data, id, name))
+data.links <- merge(data.summ, cleanUtf8Data, by="id")
+data.links.freq <- count(data.links, data.links$name.y)
+
+
