@@ -1,5 +1,4 @@
 library(tm)
-library(doParallel)
 library(slam)
 library(skmeans)
 library(plyr)
@@ -37,12 +36,21 @@ i <- c(data.aggr$id)
 j <- c(data.aggr$name)
 v <- c(data.aggr$count)
 data.triplet <- simple_triplet_matrix(i,j,v)
+data.triplet2 <- simple_triplet_matrix(j, i, v)
 
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
+data.cluster2 <- skmeans(data.triplet2, 5)
 
-data.sparse <-  sparseMatrix(i=i, j=j, x=v)
+#Prepare data for JSON
 
-library(cluster)
-clusplot(data.sparse, data.cluster$cluster, color=TRUE, shade=TRUE, 
-         labels=2, lines=0)
+#Names with cluster
+data.names.cluster <- data.frame(cluster = data.cluster2$cluster, group=unique(data.aggr$name[order(data.aggr$name)]))
+
+#Names with connected names and value
+data.summ <- summarise(group_by(cleanUtf8Data, id, name))
+data.links <- merge(data.summ, cleanUtf8Data, by="id")
+data.links.freq <- summarise(group_by(data.links, name.x, name.y), count = n())
+
+
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+       <link rel="stylesheet" href="chart3.css">
+    <meta charset="UTF-8">
+    <title>Charts R Project</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="chart.js"></script>
+    <script src="chart2.js"></script>
+</head>
+
+<body>
+    <div align='center' id="d3_selectable_force_directed_graph" style="width: 960px; height: 500px; margin: auto; margin-bottom: 12px">
+        <svg />
+    </div>
+
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <script>
+        var svg = d3.select('#d3_selectable_force_directed_graph');
+    
+        d3.json('data.json', function (error, graph) {
+            if (!error) {
+                console.log('graph', graph);
+                console.log("testtesttesttest");
+                createV4SelectableForceDirectedGraph(svg, graph);
+            } else {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -16,7 +16,6 @@ nameSetUnique <- unique(dataSet2[dataSet2$name==name,])
 nameDataSetUnique <- unique(merge(nameSetUnique, dataSet2, by="id"))
 
 #Tel frequentie van naam
-library(plyr)
 frequencyDataSetUnique <- count(nameDataSetUnique, nameDataSetUnique$name.y)
 
 #Wordcloud
