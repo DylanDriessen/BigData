@@ -50,7 +50,7 @@ data.names.cluster <- data.frame(cluster = data.cluster2$cluster, group=unique(d
 #Names with connected names and value
 data.summ <- summarise(group_by(cleanUtf8Data, id, name))
 data.links <- merge(data.summ, cleanUtf8Data, by="id")
-data.links.freq <- count(data.links, data.links$name.y)
+data.links.freq <- summarise(group_by(data.links, name.x, name.y), count = n())
 
 
 
