@@ -4,6 +4,9 @@ library(skmeans)
 library(plyr)
 library(dplyr)
 library(Matrix)
+library(wordspace)
+library(rjson)
+library(jsonlite)
 
 uniqueID <- unique(cleanUtf8Data$id)
 documentNamesString <- NULL
@@ -51,6 +54,18 @@ data.names.cluster <- data.frame(cluster = data.cluster2$cluster, group=unique(d
 data.summ <- summarise(group_by(cleanUtf8Data, id, name))
 data.links <- merge(data.summ, cleanUtf8Data, by="id")
 data.links.freq <- summarise(group_by(data.links, name.x, name.y), count = n())
+names(data.links.freq) <-  c("source", "target", "value")
 
+data.links.freq <- data.links.freq[data.links.freq$value>5,]
+data.json.list <- list(data.names.cluster, data.links.freq)
+data.json <- toJSON(data.names.cluster, dataframe = c("rows", "columns", "values"), pretty = TRUE)
 
+write(data.json, "data.json")
+#PCA
+#Wordcloud per cluster (woorden in doc)
+scalar1 <- function(x) {x / sqrt(sum(x^2))}
 
+data.sparse <- sparseMatrix(i = data.triplet2$i, j = data.triplet2$j, x = data.triplet2$v, dims = dim(data.triplet2), 
+                       dimnames = dimnames(data.triplet2))
+
+data.norm <- normalize.rows(data.sparse)
