@@ -45,6 +45,7 @@ set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
 data.cluster2 <- skmeans(data.triplet2, 5)
 
+
 #Prepare data for JSON#
 
 #Names with cluster
@@ -75,11 +76,13 @@ data.json <- toJSON(data.json.list, dataframe = c("rows", "columns", "values"), 
 write(data.json, "data.json")
 
 
-#PCA
-#Wordcloud per cluster (woorden in doc)
-scalar1 <- function(x) {x / sqrt(sum(x^2))}
+#Documents for a certain cluster
+clusterNumber <- 3
 
-data.sparse <- sparseMatrix(i = data.triplet2$i, j = data.triplet2$j, x = data.triplet2$v, dims = dim(data.triplet2), 
-                       dimnames = dimnames(data.triplet2))
+clusterDocs <- merge(data.names.cluster, data.aggr, by.x = c('id'), c('name'))
+clusterDocs$count <- NULL
+clusterDocs$id <- NULL
+names(clusterDocs) <- c('cluster', 'id')
 
-data.norm <- normalize.rows(data.sparse)
+clusterDocs.freq <- summarise(group_by(clusterDocs, cluster, id), freq=n())
+clusterDocs.specific <- clusterDocs.freq[clusterDocs.freq$cluster%in%clusterNumber,]
