@@ -45,10 +45,10 @@ set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
 data.cluster2 <- skmeans(data.triplet2, 5)
 
-#Prepare data for JSON
+#Prepare data for JSON#
 
 #Names with cluster
-data.names.cluster <- data.frame(cluster = data.cluster2$cluster, group=unique(data.aggr$name[order(data.aggr$name)]))
+data.names.cluster <- data.frame(group = data.cluster2$cluster, id=unique(data.aggr$name[order(data.aggr$name)]))
 
 #Names with connected names and value
 data.summ <- summarise(group_by(cleanUtf8Data, id, name))
@@ -56,11 +56,25 @@ data.links <- merge(data.summ, cleanUtf8Data, by="id")
 data.links.freq <- summarise(group_by(data.links, name.x, name.y), count = n())
 names(data.links.freq) <-  c("source", "target", "value")
 
-data.links.freq <- data.links.freq[data.links.freq$value>5,]
-data.json.list <- list(data.names.cluster, data.links.freq)
-data.json <- toJSON(data.names.cluster, dataframe = c("rows", "columns", "values"), pretty = TRUE)
+#Remove persons who don't often work together
+data.links.freqMod <- data.links.freq[data.links.freq$value>50,]
+data.links.freqMod$value <- lapply(data.links.freqMod$value, function(x){
+  if(x>100){
+    x=100
+    return(x)
+  }
+  return(x)
+})
+data.names.cluster.relevant <- data.names.cluster[data.names.cluster$id %in% data.links.freqMod$source,]
+
+#Write to JSON
+data.json.list <- list(data.names.cluster.relevant, data.links.freqMod)
+names(data.json.list) <-  c("nodes", "links")
+data.json <- toJSON(data.json.list, dataframe = c("rows", "columns", "values"), pretty = TRUE)
 
 write(data.json, "data.json")
+
+
 #PCA
 #Wordcloud per cluster (woorden in doc)
 scalar1 <- function(x) {x / sqrt(sum(x^2))}
