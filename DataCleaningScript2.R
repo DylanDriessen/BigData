@@ -1,6 +1,7 @@
 library('readr')
 library(parallel)
 library(tm)
+library(tidytext)
 
 
 utf8Data <-read.table("Alfresco_EN_PDF__Persons_cln.utf8",
