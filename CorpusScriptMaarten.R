@@ -45,7 +45,6 @@ set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
 data.cluster2 <- skmeans(data.triplet2, 18)
 
-
 #Prepare data for JSON#
 
 #Names with cluster
