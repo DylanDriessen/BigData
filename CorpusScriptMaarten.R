@@ -43,7 +43,7 @@ data.triplet2 <- simple_triplet_matrix(j, i, v)
 
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
-data.cluster2 <- skmeans(data.triplet2, 5)
+data.cluster2 <- skmeans(data.triplet2, 18)
 
 #Prepare data for JSON#
 
@@ -57,10 +57,10 @@ data.links.freq <- summarise(group_by(data.links, name.x, name.y), count = n())
 names(data.links.freq) <-  c("source", "target", "value")
 
 #Remove persons who don't often work together
-data.links.freqMod <- data.links.freq[data.links.freq$value>50,]
+data.links.freqMod <- data.links.freq[data.links.freq$value>10,]
 data.links.freqMod$value <- lapply(data.links.freqMod$value, function(x){
-  if(x>100){
-    x=100
+  if(x>30){
+    x=30
     return(x)
   }
   return(x)
