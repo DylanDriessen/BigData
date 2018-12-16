@@ -173,3 +173,20 @@ clusterWords$term <- as.character(clusterWords$term)
 
 #Frequency words in specific cluster (without excisting value)
 countWords <- count(clusterWords, clusterWords$term)
+count2Words <- merge(clusterWords, countWords, by.x = c('term'), c('clusterWords$term'))
+
+#Alle waarden opgeteld over de verschillende documenten
+library(data.table)
+DT <- data.table(clusterWords)
+count2Words <- DT[ , .(Totalcount = sum(count)), by = .(term)]
+summary(count2Words)
+
+#Wordcloud van termen
+par(mfrow=c(1,1))
+pal = brewer.pal(8,"Dark2")
+set.seed(1234)
+png("wordcloud.png", width=1280,height=800)
+wordcloud(count2Words$term, count2Words$Totalcount, min.freq=25,scale=c(8, 0.5),
+          max.words=Inf, random.order=FALSE, rot.per=.15,
+          colors = pal)
+dev.off()
