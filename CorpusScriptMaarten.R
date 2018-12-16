@@ -44,10 +44,6 @@ data.triplet2 <- simple_triplet_matrix(j, i, v)
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
 data.cluster2 <- skmeans(data.triplet2, 18)
-<<<<<<< HEAD
-=======
-
->>>>>>> 6c5696cbc4b47d5c262c06619cc8a8c51144b357
 
 #Prepare data for JSON#
 
