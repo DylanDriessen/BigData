@@ -76,7 +76,8 @@ data.json <- toJSON(data.json.list, dataframe = c("rows", "columns", "values"), 
 write(data.json, "data.json")
 
 
-#Documents for a certain cluster
+#Documents for a certain cluster#
+#Specifiq tabel with cluster and relevant docs
 clusterNumber <- 3
 
 clusterDocs <- merge(data.names.cluster, data.aggr, by.x = c('id'), c('name'))
@@ -86,3 +87,5 @@ names(clusterDocs) <- c('cluster', 'id')
 
 clusterDocs.freq <- summarise(group_by(clusterDocs, cluster, id), freq=n())
 clusterDocs.specific <- clusterDocs.freq[clusterDocs.freq$cluster%in%clusterNumber,]
+
+#:
