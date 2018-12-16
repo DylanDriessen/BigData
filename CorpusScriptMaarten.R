@@ -43,7 +43,7 @@ data.triplet2 <- simple_triplet_matrix(j, i, v)
 
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
-data.cluster2 <- skmeans(data.triplet2, 5)
+data.cluster2 <- skmeans(data.triplet2, 18)
 
 
 #Prepare data for JSON#
@@ -76,7 +76,8 @@ data.json <- toJSON(data.json.list, dataframe = c("rows", "columns", "values"), 
 write(data.json, "data.json")
 
 
-#Documents for a certain cluster#
+#Cluster and most used words#
+
 #Specifiq tabel with cluster and relevant docs
 clusterNumber <- 3
 
@@ -88,4 +89,9 @@ names(clusterDocs) <- c('cluster', 'id')
 clusterDocs.freq <- summarise(group_by(clusterDocs, cluster, id), freq=n())
 clusterDocs.specific <- clusterDocs.freq[clusterDocs.freq$cluster%in%clusterNumber,]
 
-#:
+#Words for specific cluster
+clusterWords <- merge(clusterDocs.specific, dtmTable, by.x = c("id"), by.y = c("document"))
+clusterWords$freq <- NULL
+clusterWords$id <- NULL
+
+
