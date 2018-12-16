@@ -44,6 +44,10 @@ data.triplet2 <- simple_triplet_matrix(j, i, v)
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
 data.cluster2 <- skmeans(data.triplet2, 18)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6c5696cbc4b47d5c262c06619cc8a8c51144b357
 
 #Prepare data for JSON#
 
@@ -75,11 +79,22 @@ data.json <- toJSON(data.json.list, dataframe = c("rows", "columns", "values"), 
 write(data.json, "data.json")
 
 
-#PCA
-#Wordcloud per cluster (woorden in doc)
-scalar1 <- function(x) {x / sqrt(sum(x^2))}
+#Cluster and most used words#
 
-data.sparse <- sparseMatrix(i = data.triplet2$i, j = data.triplet2$j, x = data.triplet2$v, dims = dim(data.triplet2), 
-                       dimnames = dimnames(data.triplet2))
+#Specifiq tabel with cluster and relevant docs
+clusterNumber <- 3
 
-data.norm <- normalize.rows(data.sparse)
+clusterDocs <- merge(data.names.cluster, data.aggr, by.x = c('id'), c('name'))
+clusterDocs$count <- NULL
+clusterDocs$id <- NULL
+names(clusterDocs) <- c('cluster', 'id')
+
+clusterDocs.freq <- summarise(group_by(clusterDocs, cluster, id), freq=n())
+clusterDocs.specific <- clusterDocs.freq[clusterDocs.freq$cluster%in%clusterNumber,]
+
+#Words for specific cluster
+clusterWords <- merge(clusterDocs.specific, dtmTable, by.x = c("id"), by.y = c("document"))
+clusterWords$freq <- NULL
+clusterWords$id <- NULL
+
+

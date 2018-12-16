@@ -10,6 +10,12 @@ utf8Data <-read.table("Alfresco_EN_PDF__Persons_cln.utf8",
            stringsAsFactors=FALSE
 )
 
+dtmTable <- tidy(dtm)
+dtmTable.toRemove <- data.frame(term=unique(dtmTable$term[grep('^.$', dtmTable$term, perl = TRUE)]))
+dtmTable <- dtmTable[!dtmTable$term %in% dtmTable.toRemove$term,]
+dtmTable <- dtmTable[!dtmTable$term %in% stopwords('english'),]
+
+
 #Cleaning with lapply and tm
 ptm <- proc.time()
 utf8Data$entity <- lapply(utf8Data$entity, function(x) tolower(x))
