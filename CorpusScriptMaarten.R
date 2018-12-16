@@ -94,4 +94,5 @@ clusterWords <- merge(clusterDocs.specific, dtmTable, by.x = c("id"), by.y = c("
 clusterWords$freq <- NULL
 clusterWords$id <- NULL
 
+clusterWords2 <- summarise(group_by(clusterWords, cluster, term), freq=sum(count))
 
