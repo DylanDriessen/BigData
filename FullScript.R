@@ -15,8 +15,8 @@ dtm.rda <- load(file = "dtm.RDa")
 dtmTable <- tidy(dtm)
 dtmTable.toRemove <- data.frame(term=unique(dtmTable$term[grep('^.$', dtmTable$term, perl = TRUE)]))
 dtmTable <- dtmTable[!dtmTable$term %in% dtmTable.toRemove$term,]
-dtmTable <- dtmTable[!dtmTable$term %in% stopwords('english'),]
 dtmTable$term <- lapply(dtmTable$term, function(x) tolower(x))
+dtmTable <- dtmTable[!dtmTable$term %in% stopwords('english'),]
 
 #Cleaning with lapply and tm
 ptm <- proc.time()
@@ -155,7 +155,7 @@ write(data.json, "data.json")
 #Cluster and most used words#
 
 #Specifiq tabel with cluster and relevant docs
-clusterNumber <- 3
+clusterNumber <- 1
 clusterDocs <- merge(data.names.cluster, data.aggr, by.x = c('id'), c('name'))
 clusterDocs$count <- NULL
 clusterDocs$id <- NULL
@@ -186,7 +186,7 @@ par(mfrow=c(1,1))
 pal = brewer.pal(8,"Dark2")
 set.seed(1234)
 png("wordcloud.png", width=1280,height=800)
-wordcloud(count2Words$term, count2Words$Totalcount, min.freq=25,scale=c(8, 0.5),
+wordcloud(count2Words$term, count2Words$Totalcount, min.freq=1000,scale=c(4, 0.5),
           max.words=Inf, random.order=FALSE, rot.per=.15,
           colors = pal)
 dev.off()
