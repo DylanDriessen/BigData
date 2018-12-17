@@ -16,7 +16,7 @@ dtmTable <- tidy(dtm)
 dtmTable.toRemove <- data.frame(term=unique(dtmTable$term[grep('^.$', dtmTable$term, perl = TRUE)]))
 dtmTable <- dtmTable[!dtmTable$term %in% dtmTable.toRemove$term,]
 dtmTable$term <- lapply(dtmTable$term, function(x) tolower(x))
-dtmTable <- dtmTable[!dtmTable$term %in% stopwords('english'),]
+dtmTable <- dtmTable[!dtmTable$term %in% stop_words$word,]
 
 #Cleaning with lapply and tm
 ptm <- proc.time()
@@ -122,8 +122,13 @@ data.triplet <- simple_triplet_matrix(i,j,v)
 data.triplet2 <- simple_triplet_matrix(j, i, v)
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
-data.cluster2 <- skmeans(data.triplet2, 18)
+data.cluster2 <- skmeans(data.triplet2, 34)
 
+dim(data.cluster2)
+hparty <- skmeans(data.cluster2, 5, control = list(verbose = TRUE))
+hparty$value
+class_ids <- attr(data.cluster2, "rclass")
+table(class_ids, hparty$cluster)
 #Prepare data for JSON#
 
 #Names with cluster
@@ -187,6 +192,26 @@ pal = brewer.pal(8,"Dark2")
 set.seed(1234)
 png("wordcloud.png", width=1280,height=800)
 wordcloud(count2Words$term, count2Words$Totalcount, min.freq=1000,scale=c(4, 0.5),
+          max.words=Inf, random.order=FALSE, rot.per=.15,
+          colors = pal)
+dev.off()
+
+#Wordcloud specifieke persoon
+personName <- 'ian_van_roosmalen'
+personIdList <- cleanUtf8Data[cleanUtf8Data$name==personName, ]
+personWordList <- merge(personIdList, dtmTable, by.x=c('id'), by.y=c('document'))
+personWordList$id <- NULL
+personWordList$name <- NULL
+personWordList$term <- as.character(personWordList$term)
+
+termFrequency <- aggregate(count ~ term, personWordList, sum)
+
+#Wordcloud van termen
+par(mfrow=c(1,1))
+pal = brewer.pal(8,"Dark2")
+set.seed(1234)
+png("wordcloudPersonal.png", width=1280,height=800)
+wordcloud(termFrequency$term, termFrequency$count, min.freq=1000,scale=c(8, 0.5),
           max.words=Inf, random.order=FALSE, rot.per=.15,
           colors = pal)
 dev.off()

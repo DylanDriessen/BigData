@@ -18,7 +18,6 @@ dtmTable$term <- lapply(dtmTable$term, function(x) tolower(x))
 dtmTable <- dtmTable[!dtmTable$term %in% stop_words$word,]
 
 
-
 #Cleaning with lapply and tm
 ptm <- proc.time()
 utf8Data$entity <- lapply(utf8Data$entity, function(x) tolower(x))
