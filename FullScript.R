@@ -55,7 +55,7 @@ par(mfrow=c(1,1))
 pal = brewer.pal(8,"Dark2")
 set.seed(1234)
 png("wordcloudUnique.png", width=1280,height=800)
-wordcloud(frequencyDataSetUnique$`nameDataSetUnique$name.y`, frequencyDataSetUnique$n,scale=c(8, 2),
+wordcloud(frequencyDataSetUnique$`nameDataSetUnique$name.y`,min.freq=1, frequencyDataSetUnique$n,scale=c(4, 1),
           max.words=Inf, random.order=FALSE, rot.per=.15,
           colors = pal)
 dev.off()
@@ -76,7 +76,7 @@ par(mfrow=c(1,1))
 pal = brewer.pal(8,"Dark2")
 set.seed(1234)
 png("wordcloud.png", width=1280,height=800)
-wordcloud(frequencyDataSet2$`nameDataSet$name.y`, frequencyDataSet2$n, min.freq=2,scale=c(8, 2),
+wordcloud(frequencyDataSet2$`nameDataSet$name.y`, frequencyDataSet2$n, min.freq=1,scale=c(8, 1.5),
           max.words=Inf, random.order=FALSE, rot.per=.15,
           colors = pal)
 dev.off()
@@ -122,13 +122,8 @@ data.triplet <- simple_triplet_matrix(i,j,v)
 data.triplet2 <- simple_triplet_matrix(j, i, v)
 set.seed(2000)
 data.cluster <- skmeans(data.triplet, 5)
-data.cluster2 <- skmeans(data.triplet2, 34)
+data.cluster2 <- skmeans(data.triplet2, 36)
 
-dim(data.cluster2)
-hparty <- skmeans(data.cluster2, 5, control = list(verbose = TRUE))
-hparty$value
-class_ids <- attr(data.cluster2, "rclass")
-table(class_ids, hparty$cluster)
 #Prepare data for JSON#
 
 #Names with cluster
@@ -160,7 +155,7 @@ write(data.json, "data.json")
 #Cluster and most used words#
 
 #Specifiq tabel with cluster and relevant docs
-clusterNumber <- 1
+clusterNumber <- 16
 clusterDocs <- merge(data.names.cluster, data.aggr, by.x = c('id'), c('name'))
 clusterDocs$count <- NULL
 clusterDocs$id <- NULL
@@ -191,13 +186,13 @@ par(mfrow=c(1,1))
 pal = brewer.pal(8,"Dark2")
 set.seed(1234)
 png("wordcloud.png", width=1280,height=800)
-wordcloud(count2Words$term, count2Words$Totalcount, min.freq=1000,scale=c(4, 0.5),
+wordcloud(count2Words$term, count2Words$Totalcount, min.freq=1000,scale=c(8, 0.5),
           max.words=Inf, random.order=FALSE, rot.per=.15,
           colors = pal)
 dev.off()
 
 #Wordcloud specifieke persoon
-personName <- 'ian_van_roosmalen'
+personName <- 'roxana_angheluta'
 personIdList <- cleanUtf8Data[cleanUtf8Data$name==personName, ]
 personWordList <- merge(personIdList, dtmTable, by.x=c('id'), by.y=c('document'))
 personWordList$id <- NULL
@@ -211,7 +206,7 @@ par(mfrow=c(1,1))
 pal = brewer.pal(8,"Dark2")
 set.seed(1234)
 png("wordcloudPersonal.png", width=1280,height=800)
-wordcloud(termFrequency$term, termFrequency$count, min.freq=1000,scale=c(8, 0.5),
+wordcloud(termFrequency$term, termFrequency$count, min.freq=750,scale=c(8, 0.5),
           max.words=Inf, random.order=FALSE, rot.per=.15,
           colors = pal)
 dev.off()
